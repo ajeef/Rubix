@@ -2380,6 +2380,11 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64_t& nMinWeight, ui
             nWeight += bnCoinDayWeight.getuint64();
         }
 
+        if(nBestHeight >= 900)
+        {
+            nStakeMaxAge       = 12 * 4* 7 * 24 * 60 * 60;	// 1 year
+        }
+
         // Weight is greater than zero, but the maximum value isn't reached yet
         if (nTimeWeight > 0 && nTimeWeight < nStakeMaxAge)
         {

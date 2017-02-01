@@ -43,7 +43,7 @@ CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
 
 unsigned int nTargetSpacing     = 2 * 60;					// 2 Minutes
 unsigned int nStakeMinAge       = 1 * 1 * 60;			// 1 Minute
-unsigned int nStakeMaxAge       = 1 * 1 * 60 * 60;	// 1 hour
+unsigned int nStakeMaxAge       = 1 * 60 * 60; // 1 hour
 unsigned int nModifierInterval  = 10 * 60;				// time to elapse before new modifier is computed
 
 int nCoinbaseMaturity = 13;
