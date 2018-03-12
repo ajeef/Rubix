@@ -27,8 +27,8 @@ RuBiX uses libsecp256k1,
 Block Spacing: 5 Minutes
 Stake Minimum Age: 15 Confirmations (PoS-v3) | 30 Minutes (PoS-v2)
 
-Port: 10255
-RPC Port: 10257
+Port: 20029
+RPC Port: 20167
 
 
 BUILD LINUX
