@@ -83,7 +83,7 @@ void QRCodeDialog::genCode()
 
 QString QRCodeDialog::getURI()
 {
-    QString ret = QString("Rubix:%1").arg(address);
+    QString ret = QString("RuBiX:%1").arg(address);
     int paramCount = 0;
 
     ui->outUri->clear();

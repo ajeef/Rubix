@@ -38,7 +38,7 @@ void MessageViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
     QTextDocument doc;
     QString align(index.data(MessageModel::TypeRole) == 1 ? "left" : "right");
-    QString html = "<p align=\"" + align + "\" style=\"color:white;\">" + index.data(MessageModel::HTMLRole).toString() + "</p>";
+    QString html = "<p align=\"" + align + "\" style=\"color:black;\">" + index.data(MessageModel::HTMLRole).toString() + "</p>";
     doc.setHtml(html);
 
     /// Painting item without text
@@ -124,8 +124,8 @@ void MessagePage::setModel(MessageModel *model)
     if(!model)
         return;
     
-    if (model->proxyModel)
-        delete model->proxyModel;
+    //if (model->proxyModel)
+    //    delete model->proxyModel;
     model->proxyModel = new QSortFilterProxyModel(this);
     model->proxyModel->setSourceModel(model);
     model->proxyModel->setDynamicSortFilter(true);

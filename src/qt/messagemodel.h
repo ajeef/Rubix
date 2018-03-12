@@ -67,7 +67,7 @@ struct MessageTableEntry
     }
 };
 
-/** Interface to Rubix Secure Messaging from Qt view code. */
+/** Interface to RuBiX Secure Messaging from Qt view code. */
 class MessageModel : public QAbstractTableModel
 {
     Q_OBJECT

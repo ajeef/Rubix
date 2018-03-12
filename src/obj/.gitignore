@@ -1,3 +1,5 @@
 *
+!support
+!crypto
+!hashalgo
 !.gitignore
-!zerocoin

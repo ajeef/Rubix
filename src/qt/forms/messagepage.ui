@@ -7,14 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>793</width>
-    <height>375</height>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Address Book</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -124,7 +121,11 @@
          </layout>
         </item>
         <item>
-         <widget class="QListView" name="listConversation"/>
+         <widget class="QListView" name="listConversation">
+          <property name="styleSheet">
+           <string notr="true">#listConversation { color: #000000; }</string>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -158,7 +159,7 @@
        <item>
         <widget class="QPushButton" name="sendButton">
          <property name="toolTip">
-          <string>Sign a message to prove you own an Rubix address</string>
+          <string>Sign a message to prove you own a RuBiX address</string>
          </property>
          <property name="text">
           <string>&amp;Send</string>

@@ -2,28 +2,26 @@
 // Alert system
 //
 
+#include "alert.h"
+
+#include "chainparams.h"
+#include "pubkey.h"
+#include "net.h"
+#include "ui_interface.h"
+#include "util.h"
+
+#include <stdint.h>
 #include <algorithm>
+#include <map>
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/foreach.hpp>
-#include <map>
-
-#include "alert.h"
-#include "key.h"
-#include "net.h"
-#include "sync.h"
-#include "ui_interface.h"
 
 using namespace std;
 
 map<uint256, CAlert> mapAlerts;
 CCriticalSection cs_mapAlerts;
-
-static const char* pszMainKey = "13aeea4ed9fa8329a1caf8ea30b1d7adce5f4e7fba15acd048aa579d12654fefc4cf1215805561cdfd0fe48d17ce9430ee724cdb87419165b93d25895bbbaeea3";
-
-// TestNet alerts pubKey
-static const char* pszTestKey = "13daea725b01451256806c501ca83a519077973f7a9e026b8dca3482f1f67f7a16fa004c47aa1c7d8154b5e08b68c7507952d86704805b94013fe4395d8a0a11a";
-
 
 void CUnsignedAlert::SetNull()
 {
@@ -54,8 +52,8 @@ std::string CUnsignedAlert::ToString() const
     return strprintf(
         "CAlert(\n"
         "    nVersion     = %d\n"
-        "    nRelayUntil  = %"PRId64"\n"
-        "    nExpiration  = %"PRId64"\n"
+        "    nRelayUntil  = %d\n"
+        "    nExpiration  = %d\n"
         "    nID          = %d\n"
         "    nCancel      = %d\n"
         "    setCancel    = %s\n"
@@ -71,18 +69,13 @@ std::string CUnsignedAlert::ToString() const
         nExpiration,
         nID,
         nCancel,
-        strSetCancel.c_str(),
+        strSetCancel,
         nMinVer,
         nMaxVer,
-        strSetSubVer.c_str(),
+        strSetSubVer,
         nPriority,
-        strComment.c_str(),
-        strStatusBar.c_str());
-}
-
-void CUnsignedAlert::print() const
-{
-    printf("%s", ToString().c_str());
+        strComment,
+        strStatusBar);
 }
 
 void CAlert::SetNull()
@@ -99,7 +92,7 @@ bool CAlert::IsNull() const
 
 uint256 CAlert::GetHash() const
 {
-    return Hash(this->vchMsg.begin(), this->vchMsg.end());
+    return HashBmw512(this->vchMsg.begin(), this->vchMsg.end());
 }
 
 bool CAlert::IsInEffect() const
@@ -131,6 +124,9 @@ bool CAlert::RelayTo(CNode* pnode) const
 {
     if (!IsInEffect())
         return false;
+    // don't relay to nodes which haven't sent their version message
+    if (pnode->nVersion == 0)
+        return false;
     // returns true if wasn't already contained in the set
     if (pnode->setKnown.insert(GetHash()).second)
     {
@@ -147,10 +143,8 @@ bool CAlert::RelayTo(CNode* pnode) const
 
 bool CAlert::CheckSignature() const
 {
-    CKey key;
-    if (!key.SetPubKey(ParseHex(fTestNet ? pszTestKey : pszMainKey)))
-        return error("CAlert::CheckSignature() : SetPubKey failed");
-    if (!key.Verify(Hash(vchMsg.begin(), vchMsg.end()), vchSig))
+    CPubKey key(Params().AlertKey());
+    if (!key.Verify(HashBmw512(vchMsg.begin(), vchMsg.end()), vchSig))
         return error("CAlert::CheckSignature() : verify signature failed");
 
     // Now unserialize the data
@@ -208,13 +202,13 @@ bool CAlert::ProcessAlert(bool fThread)
             const CAlert& alert = (*mi).second;
             if (Cancels(alert))
             {
-                printf("cancelling alert %d\n", alert.nID);
+                LogPrint("alert", "cancelling alert %d\n", alert.nID);
                 uiInterface.NotifyAlertChanged((*mi).first, CT_DELETED);
                 mapAlerts.erase(mi++);
             }
             else if (!alert.IsInEffect())
             {
-                printf("expiring alert %d\n", alert.nID);
+                LogPrint("alert", "expiring alert %d\n", alert.nID);
                 uiInterface.NotifyAlertChanged((*mi).first, CT_DELETED);
                 mapAlerts.erase(mi++);
             }
@@ -228,7 +222,7 @@ bool CAlert::ProcessAlert(bool fThread)
             const CAlert& alert = item.second;
             if (alert.Cancels(*this))
             {
-                printf("alert already cancelled by %d\n", alert.nID);
+                LogPrint("alert", "alert already cancelled by %d\n", alert.nID);
                 return false;
             }
         }
@@ -244,17 +238,9 @@ bool CAlert::ProcessAlert(bool fThread)
             {
                 // Alert text should be plain ascii coming from a trusted source, but to
                 // be safe we first strip anything not in safeChars, then add single quotes around
-                // the whole string before passing it to the shell:
+                // the whole string before passing it to the RuBiX:
                 std::string singleQuote("'");
-                // safeChars chosen to allow simple messages/URLs/email addresses, but avoid anything
-                // even possibly remotely dangerous like & or >
-                std::string safeChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 .,;_/:?@");
-                std::string safeStatus;
-                for (std::string::size_type i = 0; i < strStatusBar.size(); i++)
-                {
-                    if (safeChars.find(strStatusBar[i]) != std::string::npos)
-                        safeStatus.push_back(strStatusBar[i]);
-                }
+                std::string safeStatus = SanitizeString(strStatusBar);
                 safeStatus = singleQuote+safeStatus+singleQuote;
                 boost::replace_all(strCmd, "%s", safeStatus);
 
@@ -266,6 +252,6 @@ bool CAlert::ProcessAlert(bool fThread)
         }
     }
 
-    printf("accepted alert %d, AppliesToMe()=%d\n", nID, AppliesToMe());
+    LogPrint("alert", "accepted alert %d, AppliesToMe()=%d\n", nID, AppliesToMe());
     return true;
 }
