@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
+  </property>
   <property name="frameShape">
    <enum>QFrame::StyledPanel</enum>
   </property>
@@ -38,7 +42,7 @@
      <item>
       <widget class="QValidatedLineEdit" name="sendTo">
        <property name="toolTip">
-        <string>The address to send the payment to  (e.g. iACLambeGgkxodKtfzM7huFXyPYWjz33Z2)</string>
+        <string>The address to send the payment to  (e.g. RYkuzHsrEvv6yVtXvuBHvdp6TZzRsv42Pr)</string>
        </property>
        <property name="maxLength">
         <number>34</number>

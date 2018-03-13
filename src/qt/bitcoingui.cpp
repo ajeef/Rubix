@@ -106,7 +106,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
     setObjectName("RuBiX");
-    setStyleSheet("#RuBiX { background-color: #ffffff}");
+    setStyleSheet("#RuBiX {color: #cc9b44; background-color: #101010}");
 
     // Accept D&D of URIs
     setAcceptDrops(true);
@@ -227,7 +227,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
         QString curStyle = qApp->style()->metaObject()->className();
         if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
         {
-            progressBar->setStyleSheet("QProgressBar { color: #ffffff;background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
+            progressBar->setStyleSheet("QProgressBar { color: #cc9b44;background-color: #101010; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
         }
     }
 
@@ -235,7 +235,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     statusBar()->addWidget(progressBar);
     statusBar()->addPermanentWidget(frameBlocks);
     statusBar()->setObjectName("statusBar");
-    statusBar()->setStyleSheet("#statusBar { color: #ffffff; background-color: qradialgradient(cx: -0.8, cy: 0, fx: -0.8, fy: 0, radius: 0.6, stop: 0 #1690ca, stop: 1 #127fb3);  }");
+    statusBar()->setStyleSheet("#statusBar { color: #cc9b44; background-color: #101010;  }");
 
     syncIconMovie = new QMovie(fUseBlackTheme ? ":/movies/update_spinner_black" : ":/movies/update_spinner", "mng", this);
 
@@ -418,6 +418,8 @@ void BitcoinGUI::createMenuBar()
 
     // Configure the menus
     QMenu *file = appMenuBar->addMenu(tr("&File"));
+    file->setObjectName("file");
+    file->setStyleSheet("QMenu { color: #cc9b44;} QMenu:hover { background-color: #995c00 } #file { color: #cc9b44; background-color: #101010; } #file:hover { background-color: #995c00 }");
     file->addAction(backupWalletAction);
     file->addAction(exportAction);
     file->addAction(signMessageAction);
@@ -426,6 +428,8 @@ void BitcoinGUI::createMenuBar()
     file->addAction(quitAction);
 
     QMenu *settings = appMenuBar->addMenu(tr("&Settings"));
+    settings->setObjectName("settings");
+    settings->setStyleSheet("QMenu { color: #cc9b44;} QMenu:hover { background-color: #995c00 } #settings { color: #cc9b44; background-color: #101010; } #settings:hover { background-color: #995c00 }");
     settings->addAction(encryptWalletAction);
     settings->addAction(changePassphraseAction);
     settings->addAction(unlockWalletAction);
@@ -435,6 +439,8 @@ void BitcoinGUI::createMenuBar()
     settings->addAction(showBackupsAction);
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
+    help->setObjectName("help");
+    help->setStyleSheet("QMenu { color: #cc9b44;} QMenu:hover { background-color: #995c00 } #help { color: #cc9b44; background-color: #101010; } #help:hover { background-color: #995c00 }");
     help->addAction(openRPCConsoleAction);
     help->addSeparator();
     help->addAction(aboutAction);
@@ -457,7 +463,7 @@ void BitcoinGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolbar->setObjectName("tabs");
-    toolbar->setStyleSheet("QToolButton { color: #505050; font-weight:bold;} QToolButton:hover { background-color: #909090 } QToolButton:checked { background-color: #f1f1f1 } QToolButton:pressed { background-color: #101010 } #tabs { color: #505050; background-color: #ffffff; }");
+    toolbar->setStyleSheet("QToolButton { color: #cc9b44; font-weight:bold;} QToolButton:hover { background-color: #995c00 } QToolButton:checked { background-color: #101010 } QToolButton:pressed { background-color: #4d2e00 } #tabs { color: #cc9b44; background-color: #101010; }");
     toolbar->setIconSize(QSize(24,24));
 
     QLabel* header = new QLabel();
@@ -484,7 +490,7 @@ void BitcoinGUI::createToolBars()
 
     QWidget *spacer = makeToolBarSpacer();
     netLabel->setObjectName("netLabel");
-    netLabel->setStyleSheet("#netLabel { color: #efefef; }");
+    netLabel->setStyleSheet("#netLabel { color: #101010; }");
     toolbar->addWidget(spacer);
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setMovable(false);
@@ -730,7 +736,7 @@ void BitcoinGUI::setNumBlocks(int count)
 
         progressBarLabel->setText(tr(clientModel->isImporting() ? "Importing blocks..." : "Synchronizing with network..."));
         progressBarLabel->setVisible(true);
-        progressBarLabel->setStyleSheet("QLabel { color: #ffffff; }");
+        progressBarLabel->setStyleSheet("QLabel { color: #cc9b44; }");
         progressBar->setFormat(tr("%1 behind").arg(timeBehindText));
         progressBar->setMaximum(totalSecs);
         progressBar->setValue(totalSecs - secs);

@@ -193,6 +193,7 @@ void TransactionView::setModel(WalletModel *model)
 
         transactionView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         transactionView->setModel(transactionProxyModel);
+        transactionView->setStyleSheet("QWidget {color: #cc9b44; background-color: #101010;}");
         transactionView->setAlternatingRowColors(true);
         transactionView->setSelectionBehavior(QAbstractItemView::SelectRows);
         transactionView->setSelectionMode(QAbstractItemView::ExtendedSelection);

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
+  </property>
   <property name="frameShape">
    <enum>QFrame::StyledPanel</enum>
   </property>
@@ -93,13 +97,7 @@
    <item row="8" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="BitcoinAmountField" name="payAmount">
-       <zorder>deleteButton</zorder>
-       <zorder>deleteButton</zorder>
-       <zorder>deleteButton</zorder>
-       <zorder>deleteButton</zorder>
-       <zorder>deleteButton</zorder>
-      </widget>
+      <widget class="BitcoinAmountField" name="payAmount"/>
      </item>
      <item>
       <widget class="QToolButton" name="deleteButton">
@@ -122,7 +120,7 @@
      <item>
       <widget class="QValidatedLineEdit" name="payTo">
        <property name="toolTip">
-        <string>The address to send the payment to (e.g. C8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</string>
+        <string>The address to send the payment to (e.g. RYkuzHsrEvv6yVtXvuBHvdp6TZzRsv42Pr)</string>
        </property>
        <property name="maxLength">
         <number>80</number>
@@ -152,15 +150,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>BitcoinAmountField</class>
+   <extends>QSpinBox</extends>
+   <header>bitcoinamountfield.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>QValidatedLineEdit</class>
    <extends>QLineEdit</extends>
    <header>qvalidatedlineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>BitcoinAmountField</class>
-   <extends>QLineEdit</extends>
-   <header>bitcoinamountfield.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Configure Darksend</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
+  </property>
   <widget class="QPushButton" name="buttonBasic">
    <property name="geometry">
     <rect>

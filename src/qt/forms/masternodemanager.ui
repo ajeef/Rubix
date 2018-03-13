@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
+  </property>
   <layout class="QVBoxLayout" name="topLayout">
    <property name="leftMargin">
     <number>0</number>

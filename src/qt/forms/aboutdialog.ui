@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>About RuBiX</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <widget class="QLabel" name="label_4">
@@ -139,6 +143,9 @@ This product includes software developed by the OpenSSL Project for use in the O
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
