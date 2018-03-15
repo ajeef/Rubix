@@ -3,48 +3,34 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
-#include <QLabel>
 
 #include <stdint.h>
 
 class TransactionTableModel;
 class ClientModel;
 class WalletModel;
-class MessageModel;
 class TransactionView;
 class OverviewPage;
 class AddressBookPage;
-class MessagePage;
 class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
 class RPCConsole;
+class MasternodeManager;
+class MessagePage;
+class MiningPage;
+class MessageModel;
+class BlockBrowser;
+class tradingDialog;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
-class QLineEdit;
-class QTableView;
-class QAbstractItemModel;
 class QModelIndex;
 class QProgressBar;
+class QProgressDialog;
 class QStackedWidget;
-class QUrl;
+class QScrollArea;
 QT_END_NAMESPACE
-
-class ActiveLabel : public QLabel
-{
-    Q_OBJECT
-public:
-    ActiveLabel(const QString & text = "", QWidget * parent = 0);
-    ~ActiveLabel(){}
-
-signals:
-    void clicked();
-
-protected:
-    void mouseReleaseEvent (QMouseEvent * event) ;
-
-};
 
 /**
   Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
@@ -53,6 +39,7 @@ protected:
 class BitcoinGUI : public QMainWindow
 {
     Q_OBJECT
+
 public:
     explicit BitcoinGUI(QWidget *parent = 0);
     ~BitcoinGUI();
@@ -66,10 +53,6 @@ public:
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
-    /** Set the message model.
-        The message model represents encryption message database, and offers access to the list of messages, address book and sending
-        functionality.
-    */
     void setMessageModel(MessageModel *messageModel);
 
 protected:
@@ -83,25 +66,31 @@ private:
     WalletModel *walletModel;
     MessageModel *messageModel;
 
-    QStackedWidget *centralWidget;
+    QToolBar *toolbar;
 
+    QStackedWidget *centralStackedWidget;
+
+    QWidget *overviewWidget;
+    QScrollArea *overviewScroll;
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
     AddressBookPage *addressBookPage;
     AddressBookPage *receiveCoinsPage;
-    MessagePage *messagePage;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
-
-    ActiveLabel *labelEncryptionIcon;
+    MasternodeManager *masternodeManagerPage;
+    MessagePage *messagePage;
+    MiningPage *miningPage;
+    QLabel* netLabel;
+    BlockBrowser *blockBrowser;
+    tradingDialog   *tradingDialogPage;
+    QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
-    QLabel *mainIcon;
-    QToolBar *mainToolbar;
-    QToolBar *secondaryToolbar;
     QProgressBar *progressBar;
+    QProgressDialog *progressDialog;
 
     QMenuBar *appMenuBar;
     QAction *overviewAction;
@@ -109,7 +98,6 @@ private:
     QAction *quitAction;
     QAction *sendCoinsAction;
     QAction *addressBookAction;
-    QAction *messageAction;
     QAction *signMessageAction;
     QAction *verifyMessageAction;
     QAction *aboutAction;
@@ -124,6 +112,12 @@ private:
     QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
+    QAction *masternodeManagerAction;
+    QAction *messageAction;
+    QAction *miningAction;
+    QAction *blockAction;
+    QAction *TradingAction;
+    QAction *showBackupsAction;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -131,6 +125,8 @@ private:
     RPCConsole *rpcConsole;
 
     QMovie *syncIconMovie;
+    /** Keep track of previous number of blocks, to detect progress */
+    int prevBlocks;
 
     uint64_t nWeight;
 
@@ -143,11 +139,13 @@ private:
     /** Create system tray (notification) icon */
     void createTrayIcon();
 
+    void clearWidgets();
+
 public slots:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
     /** Set number of blocks shown in the UI */
-    void setNumBlocks(int count, int nTotalBlocks);
+    void setNumBlocks(int count);
     /** Set the encryption status as shown in the UI.
        @param[in] status            current encryption status
        @see WalletModel::EncryptionStatus
@@ -156,6 +154,14 @@ public slots:
 
     /** Notify the user of an error in the network or transaction handling code. */
     void error(const QString &title, const QString &message, bool modal);
+    /** Notify the user of an event from the core network or transaction handling code.
+       @param[in] title     the message box / notification title
+       @param[in] message   the displayed text
+       @param[in] modal     true to use a message box, false to use a notification
+       @param[in] style     style definitions (icon and used buttons - buttons only for message boxes)
+                            @see CClientUIInterface::MessageBoxFlags
+    */
+    void message(const QString &title, const QString &message, bool modal, unsigned int style);
     /** Asks the user whether to pay the transaction fee or to cancel the transaction.
        It is currently not possible to pass a return value to another thread through
        BlockingQueuedConnection, so an indirected pointer is used.
@@ -178,14 +184,20 @@ private slots:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage();
-    /** Switch to message page */
-    void gotoMessagePage();
-
+   /** Switch to trading page */
+    void gotoTradingPage();
+    /** Switch to block explorer*/
+    void gotoBlockBrowser();
+    /** Switch to masternode manager page*/
+    void gotoMasternodeManagerPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
-
+    /** Switch to message page*/
+    void gotoMessagePage();
+    /** Switch to mining page*/
+    void gotoMiningPage();
     /** Show configuration dialog */
     void optionsClicked();
     /** Show about dialog */
@@ -199,15 +211,9 @@ private slots:
         The new items are those between start and end inclusive, under the given parent item.
     */
     void incomingTransaction(const QModelIndex & parent, int start, int end);
-
-    /** Show incoming message notification for new messages.
-
-        The new items are those between start and end inclusive, under the given parent item.
-    */
     void incomingMessage(const QModelIndex & parent, int start, int end);
-
     /** Encrypt the wallet */
-    void encryptWallet(bool status);
+    void encryptWallet();
     /** Backup the wallet */
     void backupWallet();
     /** Change encrypted wallet passphrase */
@@ -224,6 +230,12 @@ private slots:
 
     void updateWeight();
     void updateStakingIcon();
+
+    /** called by a timer to check if fRequestShutdown has been set **/
+    void detectShutdown();
+
+    /** Show progress dialog e.g. for verifychain */
+    void showProgress(const QString &title, int nProgress);
 };
 
-#endif
+#endif // BITCOINGUI_H

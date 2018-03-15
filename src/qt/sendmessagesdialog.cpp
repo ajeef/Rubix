@@ -34,7 +34,7 @@ SendMessagesDialog::SendMessagesDialog(Mode mode, Type type, QWidget *parent) :
 #if QT_VERSION >= 0x040700
      /* Do not move this to the XML file, Qt before 4.7 will choke on it */
     if(mode == SendMessagesDialog::Encrypted)
-        ui->addressFrom->setPlaceholderText(tr("Enter an Rubix address (e.g. RP28nYuu9G5n8Hg4xHhbz2rJkTRCsgFMPJ)"));
+        ui->addressFrom->setPlaceholderText(tr("Enter a RuBiX address (e.g. iACLambeGgkxodKtfzM7huFXyPYWjz33Z2)"));
  #endif
     addEntry();
 

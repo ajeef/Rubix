@@ -102,7 +102,7 @@ Section -post SEC0001
     #    WriteRegStr HKCR "bitcoin" "URL Protocol" ""
     #    WriteRegStr HKCR "bitcoin" "" "URL:Bitcoin"
     #    WriteRegStr HKCR "bitcoin\DefaultIcon" "" $INSTDIR\bitcoin-qt.exe
-    #    WriteRegStr HKCR "bitcoin\shell\open\command" "" '"$INSTDIR\bitcoin-qt.exe" "$$1"'
+    #    WriteRegStr HKCR "bitcoin\RuBiX\open\command" "" '"$INSTDIR\bitcoin-qt.exe" "$$1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -150,12 +150,12 @@ no_smgroup:
     Pop $R0
 SectionEnd
 
-# Installer function
+# Installer functions
 Function .onInit
     InitPluginsDir
 FunctionEnd
 
-# Uninstaller function
+# Uninstaller functions
 Function un.onInit
     ReadRegStr $INSTDIR HKCU "${REGKEY}" Path
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup

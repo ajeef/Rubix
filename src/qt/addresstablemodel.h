@@ -14,20 +14,21 @@ class WalletModel;
 class AddressTableModel : public QAbstractTableModel
 {
     Q_OBJECT
+
 public:
     explicit AddressTableModel(CWallet *wallet, WalletModel *parent = 0);
     ~AddressTableModel();
-    
+
     enum AddressType {
         AT_Unknown = 0, /**< User specified label */
         AT_Normal = 1,  /**< Bitcoin address */
         AT_Stealth = 2  /**< Stealth address */
     };
-    
+
     enum ColumnIndex {
         Label = 0,   /**< User specified label */
         Address = 1,  /**< Bitcoin address */
-        Type = 2  /**< Address type  */
+	Type = 2 /**< Address type */
     };
 
     enum RoleIndex {
@@ -84,9 +85,6 @@ private:
 
     /** Notify listeners that data changed. */
     void emitDataChanged(int index);
-
-signals:
-    void defaultAddressChanged(const QString &address);
 
 public slots:
     /* Update address list from core.

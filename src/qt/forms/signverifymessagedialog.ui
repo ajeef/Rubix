@@ -14,7 +14,8 @@
    <string>Signatures - Sign / Verify a Message</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">color: rgb(204, 155, 68);
+background-color: rgb(16, 16, 16);</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -51,7 +52,7 @@
          <item>
           <widget class="QValidatedLineEdit" name="addressIn_SM">
            <property name="toolTip">
-            <string>The address to sign the message with (e.g. RP28nYuu9G5n8Hg4xHhbz2rJkTRCsgFMPJ)</string>
+            <string>The address to sign the message with (e.g. RYkuzHsrEvv6yVtXvuBHvdp6TZzRsv42Pr)</string>
            </property>
            <property name="maxLength">
             <number>34</number>
@@ -148,7 +149,7 @@
          <item>
           <widget class="QPushButton" name="signMessageButton_SM">
            <property name="toolTip">
-            <string>Sign the message to prove you own this Rubix address</string>
+            <string>Sign the message to prove you own this RuBiX address</string>
            </property>
            <property name="text">
             <string>&amp;Sign Message</string>
@@ -254,7 +255,7 @@
          <item>
           <widget class="QValidatedLineEdit" name="addressIn_VM">
            <property name="toolTip">
-            <string>The address the message was signed with (e.g. RP28nYuu9G5n8Hg4xHhbz2rJkTRCsgFMPJ)</string>
+            <string>The address the message was signed with (e.g. RYkuzHsrEvv6yVtXvuBHvdp6TZzRsv42Pr)</string>
            </property>
            <property name="maxLength">
             <number>34</number>
@@ -294,7 +295,7 @@
          <item>
           <widget class="QPushButton" name="verifyMessageButton_VM">
            <property name="toolTip">
-            <string>Verify the message to ensure it was signed with the specified Rubix address</string>
+            <string>Verify the message to ensure it was signed with the specified RuBiX address</string>
            </property>
            <property name="text">
             <string>&amp;Verify Message</string>
