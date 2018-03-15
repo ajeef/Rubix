@@ -2532,7 +2532,6 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 
         // Verify coin stake tx includes devops payment
         if (1 > 0) {
-            LOCK2(cs_main, mempool.cs);
 
             CBlockIndex *pindex = pindexBest;
             if(pindex != NULL){
