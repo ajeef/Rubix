@@ -10,19 +10,17 @@ BOOST_SUFFIX?=-mgw49-mt-s-1_57
 
 INCLUDEPATHS= \
  -I"$(CURDIR)" \
- -I"c:/dev/coindeps32/boost_1_57_0/include" \
- -I"c:/dev/coindeps32/bdb-4.8/include" \
- -I"c:/dev/coindeps32/openssl-1.0.1p/include" \
- -I"c:/dev/coindeps32/Secp256k1/include" \
- -I"c:/dev/coindeps32/miniupnpc-1.9"
-
+ -I"/c/deps/boost_1_57_0" \
+ -I"/c/deps" \
+ -I"/c/deps/db-4.8.30.NC/build_unix" \
+ -I"/c/deps/openssl-1.0.1j/include"
+ 
 LIBPATHS= \
  -L"$(CURDIR)/leveldb" \
- -L"c:/dev/coindeps32/boost_1_57_0/lib" \
- -L"c:/dev/coindeps32/bdb-4.8/lib" \
- -L"c:/dev/coindeps32/openssl-1.0.1p/lib" \
- -L"c:/dev/coindeps32/Secp256k1/lib" \
- -L"c:/dev/coindeps32/miniupnpc-1.9"
+ -L"/c/deps/boost_1_57_0/stage/lib" \
+ -L"/c/deps/miniupnpc" \
+ -L"/c/deps/db-4.8.30.NC/build_unix" \
+ -L"/c/deps/openssl-1.0.1j"
 
 LIBS= \
  -l leveldb \
@@ -39,9 +37,10 @@ LIBS= \
 
 DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE
 DEBUGFLAGS=-g
-CFLAGS=-mthreads -O2 -w -Wall -Wextra -Wno-ignored-qualifiers -Wformat -Wformat-security -Wno-unused-parameter -fpermissive $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
-LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat -Wl,--large-address-aware -static
-
+ CFLAGS=-mthreads -O2 -w -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
+ # enable: ASLR, DEP and large address aware
+-LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat -Wl,--large-address-aware
++LDFLAGS=-Wl,--dynamicbase -Wl,--nxcompat -Wl,--large-address-aware -static
 TESTDEFS = -DTEST_DATA_DIR=$(abspath test/data)
 
 ifndef USE_UPNP
