@@ -11,7 +11,7 @@ BOOST_SUFFIX?=-mgw49-mt-s-1_57
 INCLUDEPATHS= \
  -I"$(CURDIR)" \
  -I"/c/deps/boost_1_57_0" \
- -I"/c/deps" \
+ -I"/c/deps/miniupnpc" \
  -I"/c/deps/db-4.8.30.NC/build_unix" \
  -I"/c/deps/openssl-1.0.1j/include"
  
@@ -35,7 +35,7 @@ LIBS= \
  -l secp256k1 \
  -l crypto
 
-DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE
+DEFS=-DWIN32 -D_WINDOWS -DBOOST_THREAD_USE_LIB -DBOOST_SPIRIT_THREADSAFE -D__NO_SYSTEM_INCLUDES
 DEBUGFLAGS=-g
  CFLAGS=-mthreads -O2 -w -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
  # enable: ASLR, DEP and large address aware
